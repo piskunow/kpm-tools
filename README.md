@@ -1,6 +1,7 @@
-<<<<<<< HEAD
 # kpm-tools
+
 =======
+
 # KPM Tools
 
 [![PyPI](https://img.shields.io/pypi/v/kpm-tools.svg)][pypi_]
@@ -51,7 +52,7 @@ To learn more, see the [Contributor Guide].
 
 ## License
 
-Distributed under the terms of the [MIT license][license],
+Distributed under the terms of the [BSD 2-Clause license][license],
 _KPM Tools_ is free and open source software.
 
 ## Issues
@@ -74,4 +75,3 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 [license]: https://github.com/piskunow/kpm-tools/blob/main/LICENSE
 [contributor guide]: https://github.com/piskunow/kpm-tools/blob/main/CONTRIBUTING.md
 [command-line reference]: https://kpm-tools.readthedocs.io/en/latest/usage.html
->>>>>>> dccb53a (initial commit from hypermodern template)
