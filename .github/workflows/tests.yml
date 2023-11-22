@@ -42,6 +42,12 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt pip
           pip --version
 
+      - name: Install Kwant
+        run: |
+          sudo apt-add-repository -s ppa:kwant-project/ppa
+          sudo apt-get update
+          sudo apt-get install python3-kwant
+
       - name: Upgrade pip in virtual environments
         shell: python
         run: |
