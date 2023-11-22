@@ -18,6 +18,7 @@ Changelog = "https://github.com/piskunow/kpm-tools/releases"
 [tool.poetry.dependencies]
 python = "^3.7"
 click = ">=8.0.1"
+nbsphinx = "^0.9.3"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
