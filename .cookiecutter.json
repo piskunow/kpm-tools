@@ -1,0 +1,16 @@
+{
+  "_checkout": "2022.6.3",
+  "_output_dir": "/home/pablo/work",
+  "_repo_dir": "/home/pablo/.cookiecutters/cookiecutter-hypermodern-python",
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "Pablo Piskunow",
+  "copyright_year": "2023",
+  "development_status": "Development Status :: 3 - Alpha",
+  "email": "kpm@piskunow.com",
+  "friendly_name": "KPM Tools",
+  "github_user": "piskunow",
+  "license": "MIT",
+  "package_name": "kpm_tools",
+  "project_name": "kpm-tools",
+  "version": "0.0.0"
+}
