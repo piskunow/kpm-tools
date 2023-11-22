@@ -51,7 +51,7 @@ To learn more, see the [Contributor Guide].
 
 ## License
 
-Distributed under the terms of the [MIT license][license],
+Distributed under the terms of the [BSD 2-Clause license][license],
 _KPM Tools_ is free and open source software.
 
 ## Issues
