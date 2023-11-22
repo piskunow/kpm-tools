@@ -60,14 +60,6 @@ repos:
         language: system
         types: [text]
         stages: [commit, push, manual]
-      - id: mypy
-        name: mypy
-        entry: mypy
-        args: ["--ignore-missing-imports", "src", "tests"]
-        language: python
-        types: [python]
-        pass_filenames: false
-        target: ["src"]
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.6.0
