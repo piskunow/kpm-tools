@@ -14,6 +14,7 @@ hidden:
 maxdepth: 1
 ---
 
+Tutorials <tutorials>
 usage
 reference
 contributing
