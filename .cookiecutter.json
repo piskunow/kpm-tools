@@ -9,7 +9,7 @@
   "email": "kpm@piskunow.com",
   "friendly_name": "KPM Tools",
   "github_user": "piskunow",
-  "license": "MIT",
+  "license": "BSD 2-Clause",
   "package_name": "kpm_tools",
   "project_name": "kpm-tools",
   "version": "0.0.0"
