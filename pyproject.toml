@@ -19,6 +19,7 @@ Changelog = "https://github.com/piskunow/kpm-tools/releases"
 python = "^3.9"
 click = ">=8.0.1"
 tornado = ">=6.3.3"
+nox-poetry = "^1.0.3"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
