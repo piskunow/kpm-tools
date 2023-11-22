@@ -11,7 +11,7 @@ Here is a list of important resources for contributors:
 - [Issue Tracker]
 - [Code of Conduct]
 
-[BSD 2-Clause license]: https://opensource.org/license/bsd-2-clause/
+[bsd 2-clause license]: https://opensource.org/license/bsd-2-clause/
 [source code]: https://github.com/piskunow/kpm-tools
 [documentation]: https://kpm-tools.readthedocs.io/
 [issue tracker]: https://github.com/piskunow/kpm-tools/issues
@@ -37,7 +37,7 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.7+ and the following tools:
+You need Python 3.9+ and the following tools:
 
 - [Poetry]
 - [Nox]
