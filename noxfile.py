@@ -113,18 +113,39 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 @nox.session(python=python_versions)
 def install_kwant(session: Session):
     """Install kwant from source."""
-    # Clone the kwant repository
-    session.run(
-        "git",
-        "clone",
-        "https://gitlab.kwant-project.org/kwant/kwant.git",
-        external=True,
-    )
+    session.install("cython", "numpy", "scipy", "sympy", "tinyarray", "kwant")
 
-    # Navigate to the cloned directory (adjust path as necessary)
-    session.cd("kwant-repo")
+
+@nox.session(python=python_versions)
+def build_kwant(session: Session):
+    """Build and install kwant from source."""
+    session.install("cython", "numpy", "scipy", "sympy", "tinyarray")
+
+    # temp folder
+    kwant_dir = os.path.join(session.create_tmp(), "kwant")
+
+    need_to_build = False
+    # Check if kwant directory exists
+    if os.path.exists(kwant_dir):
+        # If exists, pull the latest changes
+        session.run("git", "-C", kwant_dir, "pull", external=True)
+    else:
+        need_to_build = True
+        # If not, clone the repository
+        session.run(
+            "git",
+            "clone",
+            "https://github.com/kwant-project/kwant.git",
+            kwant_dir,
+            external=True,
+        )
+
+    # Navigate to the cloned directory
+    session.cd(kwant_dir)
 
     # Install kwant from source
+    if need_to_build:
+        session.run("python", "setup.py", "build")
     session.run("python", "setup.py", "install")
 
 
@@ -244,8 +265,8 @@ def docs_build(session: Session) -> None:
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
+
     session.install(".")
-    session.install_kwant()
     session.install(
         "sphinx",
         "sphinx-autobuild",
