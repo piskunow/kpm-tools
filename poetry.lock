@@ -1157,26 +1157,6 @@ files = [
 ]
 
 [[package]]
-name = "kwant"
-version = "1.4.4"
-description = "Package for numerical quantum transport calculations (Python 3 version)"
-optional = false
-python-versions = "*"
-files = [
-    {file = "kwant-1.4.4.tar.gz", hash = "sha256:6cf76cc09166714a46644a8127b82b386b1a8e76b8c836c95281f6f8be72ac30"},
-]
-
-[package.dependencies]
-numpy = ">=1.11.0"
-scipy = ">=0.17.0"
-tinyarray = ">=1.2"
-
-[package.extras]
-continuum = ["sympy (>=0.7.6)"]
-plotting = ["matplotlib (>=1.5.1)"]
-qsymm = ["qsymm (>=1.2.6)"]
-
-[[package]]
 name = "livereload"
 version = "2.6.3"
 description = "Python LiveReload is an awesome tool for web developers"
@@ -3024,4 +3004,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "83a2051156f5ce2255297721f60216f2d277f3fda859188e9d10af7acfa543ea"
+content-hash = "db7029138a7b6afb21c6c1fbae67bdaa75cce6a73c679b5ae94609a39c8c1f4d"
