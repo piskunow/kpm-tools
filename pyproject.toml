@@ -26,6 +26,7 @@ scipy = "^1.11.4"
 matplotlib = "^3.8.2"
 tinyarray = "^1.2.4"
 kwant = "^1.4.4"
+sympy = "^1.12"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
