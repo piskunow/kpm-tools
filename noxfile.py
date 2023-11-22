@@ -110,6 +110,24 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
                 break
 
 
+@nox.session(python=python_versions)
+def install_kwant(session: Session):
+    """Install kwant from source."""
+    # Clone the kwant repository
+    session.run(
+        "git",
+        "clone",
+        "https://gitlab.kwant-project.org/kwant/kwant.git",
+        external=True,
+    )
+
+    # Navigate to the cloned directory (adjust path as necessary)
+    session.cd("kwant-repo")
+
+    # Install kwant from source
+    session.run("python", "setup.py", "install")
+
+
 @session(name="pre-commit", python=python_versions[0])
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
@@ -227,6 +245,7 @@ def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
     session.install(".")
+    session.install_kwant()
     session.install(
         "sphinx",
         "sphinx-autobuild",
