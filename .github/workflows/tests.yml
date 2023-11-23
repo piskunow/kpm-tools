@@ -63,8 +63,7 @@ jobs:
       - name: Install Python dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
-          poetry shell
-          pip install cython numpy scipy sympy tinyarray
+          python -m pip install cython numpy scipy sympy tinyarray
 
       - name: Clone and Install kwant (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
@@ -74,7 +73,6 @@ jobs:
           git clone https://github.com/kwant-project/kwant.git
           cd kwant
           git checkout master
-          poetry shell
           python setup.py build
           sudo python setup.py install
 
