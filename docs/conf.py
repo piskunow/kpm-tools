@@ -12,6 +12,7 @@ extensions = [
 nbsphinx_allow_errors = True
 autodoc_typehints = "description"
 html_theme = "furo"
+exclude_patterns = ["_build", "**.ipynb_checkpoints"]
 nbsphinx_prolog = r"""
 .. raw:: html
 
