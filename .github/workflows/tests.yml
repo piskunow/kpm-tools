@@ -44,7 +44,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install -y cython g++ build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
+          sudo apt-get install -y g++ build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
 
       - name: Install Python dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
