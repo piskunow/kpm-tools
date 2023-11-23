@@ -57,6 +57,7 @@ jobs:
           git clone https://github.com/kwant-project/kwant.git
           cd kwant
           git checkout master
+          rm build -rf
           python setup.py build
           sudo python setup.py install
 
