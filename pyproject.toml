@@ -29,6 +29,8 @@ sympy = "^1.12"
 setuptools = "^69.0.2"
 wheel = "^0.41.3"
 pip = "^23.3.1"
+holoviews = "^1.18.1"
+ipykernel = "^6.27.0"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
