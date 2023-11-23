@@ -59,6 +59,7 @@ holoviews = "^1.18.1"
 nbsphinx = "^0.9.3"
 jupyter = "^1.0.0"
 plotly = "^5.18.0"
+pandoc = "^2.3"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
