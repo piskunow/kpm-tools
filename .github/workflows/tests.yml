@@ -38,12 +38,13 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt pip
           pip --version
 
-        # sudo apt-get install -y python3-dev python3-setuptools python3-scipy python3-matplotlib python3-pytest python3-sympy g++ gfortran libmumps-scotch-dev
+        # sudo apt-get install -y python3-dev python3-setuptools python3-scipy python3-matplotlib python3-pytest python3-sympy
+        # g++ gfortran libmumps-scotch-dev
       - name: Install System Dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
+          sudo apt-get install -y cython g++ build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
 
       - name: Install Python dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
