@@ -34,4 +34,4 @@ nbsphinx_prolog = r"""
     </script>
 
 
-  """
+  """  # noqa: B950
