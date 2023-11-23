@@ -43,18 +43,16 @@ jobs:
           pipx install --pip-args=--constraint=.github/workflows/constraints.txt poetry
           poetry --version
 
-        # sudo apt-get install -y python3-dev python3-setuptools python3-scipy python3-matplotlib python3-pytest python3-sympy
-        # g++ gfortran libmumps-scotch-dev
       - name: Install System Dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++ build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
+          sudo apt-get install -y python3-dev python3-setuptools python3-scipy python3-matplotlib python3-pytest python3-sympy g++ build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
 
       - name: Install Python dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
-          python -m pip install cython numpy scipy sympy tinyarray
+          python -m pip install cython tinyarray
 
       - name: Clone and Install kwant (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
