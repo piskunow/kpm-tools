@@ -38,11 +38,22 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt pip
           pip --version
 
-      - name: Install Kwant
+        # sudo apt-get install -y python3-dev python3-setuptools python3-scipy python3-matplotlib python3-pytest python3-sympy g++ gfortran libmumps-scotch-dev
+      - name: Install System Dependencies (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
         run: |
-          sudo apt-add-repository -s ppa:kwant-project/ppa
           sudo apt-get update
-          sudo apt-get install python3-kwant
+          sudo apt-get install -y build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
+          pip install cython, numpy, scipy, sympy, tinyarray
+
+      - name: Clone and Install kwant (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          git clone https://github.com/kwant-project/kwant.git
+          cd kwant
+          git checkout master
+          python setup.py build
+          sudo python setup.py install
 
       - name: Upgrade pip in virtual environments
         shell: python
