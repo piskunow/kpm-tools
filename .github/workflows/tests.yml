@@ -44,6 +44,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential gfortran libopenblas-dev liblapack-dev libmumps-scotch-dev
+
+      - name: Install Python dependencies (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
           pip install cython, numpy, scipy, sympy, tinyarray
 
       - name: Clone and Install kwant (Ubuntu)
