@@ -60,9 +60,6 @@ jobs:
           git clone https://github.com/kwant-project/kwant.git
           cd kwant
           git checkout master
-          # numpy_include=$(python -c 'import numpy; print(numpy.get_include())')
-          # CFLAGS="-I$numpy_include" python setup.py build
-          # sudo python setup.py install
 
       - name: Install Nox
         run: |
