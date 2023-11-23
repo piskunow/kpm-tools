@@ -5,5 +5,5 @@
 maxdepth: 1
 ---
 
-tutorial_01_test
+tutorials/tutorial_bloch
 ```

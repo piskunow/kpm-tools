@@ -18,17 +18,13 @@ Changelog = "https://github.com/piskunow/kpm-tools/releases"
 [tool.poetry.dependencies]
 python = "^3.9"
 click = ">=8.0.1"
-nbsphinx = "^0.9.3"
 tornado = ">=6.3.3"
 nox-poetry = "^1.0.3"
 numpy = "^1.26.2"
 scipy = "^1.11.4"
 matplotlib = "^3.8.2"
 tinyarray = "^1.2.4"
-sympy = "^1.12"
-setuptools = "^69.0.2"
-wheel = "^0.41.3"
-pip = "^23.3.1"
+pandoc = "^2.3"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
@@ -58,6 +54,13 @@ myst-parser = {version = ">=0.16.1"}
 
 [tool.poetry.scripts]
 kpm-tools = "kpm_tools.__main__:main"
+
+[tool.poetry.group.dev.dependencies]
+holoviews = "^1.18.1"
+nbsphinx = "^0.9.3"
+jupyter = "^1.0.0"
+plotly = "^5.18.0"
+pandoc = "^2.3"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
