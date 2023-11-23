@@ -5,9 +5,9 @@ Defined both with open boundary and periodic boundary conditions.
 from itertools import product
 
 import numpy as np
-from kwant import HoppingKind
 
 import kwant
+from kwant import HoppingKind
 
 
 # neighbors for honeycomb lattice
