@@ -15,13 +15,13 @@ import tinyarray as ta
 if kwant.__version__ <= "1.4.2":
     raise ImportError("This module does not work with versions of Kwant " "<= 1.4.2.")
 from kwant._common import get_parameters
-from kwant._common import memoize
 from kwant.builder import Builder
-from kwant.builder import SiteArray
 from kwant.builder import herm_conj
 from kwant.lattice import TranslationalSymmetry
+from kwant.system import SiteArray
 from kwant.wraparound import WrappedBuilder
 from kwant.wraparound import _callable_herm_conj
+from kwant.wraparound import _memoize as memoize
 from kwant.wraparound import _set_signature
 from kwant.wraparound import wraparound
 
