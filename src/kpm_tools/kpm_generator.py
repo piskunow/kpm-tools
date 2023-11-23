@@ -6,13 +6,14 @@ from concurrent.futures import ThreadPoolExecutor
 from math import ceil
 from multiprocessing import Pool
 
-import kwant
 import numpy as np
 from common import identity_operator
-from kwant.operator import _LocalOperator
 from scipy.sparse import csr_matrix
 from scipy.sparse import identity
 from scipy.sparse.linalg import eigsh
+
+import kwant
+from kwant.operator import _LocalOperator
 
 
 DEFAULT_MOMENTS = 100

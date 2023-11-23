@@ -143,6 +143,9 @@ def build_kwant(session: Session):
     # Navigate to the cloned directory
     session.cd(kwant_dir)
 
+    # Checkout the master branch
+    session.run("git", "checkout", "master", external=True)
+
     # Install kwant from source
     if need_to_build:
         session.run("python", "setup.py", "build")
