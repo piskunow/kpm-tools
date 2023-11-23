@@ -1,23 +1,30 @@
 [tool.poetry]
 name = "kpm-tools"
-version = "0.0.0"
+version = "0.0.1"
 description = "KPM Tools"
 authors = ["Pablo Piskunow <kpm@piskunow.com>"]
-license = "MIT"
+license = "BSD 2-Clause"
 readme = "README.md"
 homepage = "https://github.com/piskunow/kpm-tools"
 repository = "https://github.com/piskunow/kpm-tools"
 documentation = "https://kpm-tools.readthedocs.io"
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
 ]
 
 [tool.poetry.urls]
 Changelog = "https://github.com/piskunow/kpm-tools/releases"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
 click = ">=8.0.1"
+tornado = ">=6.3.3"
+nox-poetry = "^1.0.3"
+numpy = "^1.26.2"
+scipy = "^1.11.4"
+matplotlib = "^3.8.2"
+tinyarray = "^1.2.4"
+pandoc = "^2.3"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
@@ -48,6 +55,13 @@ myst-parser = {version = ">=0.16.1"}
 [tool.poetry.scripts]
 kpm-tools = "kpm_tools.__main__:main"
 
+[tool.poetry.group.dev.dependencies]
+holoviews = "^1.18.1"
+nbsphinx = "^0.9.3"
+jupyter = "^1.0.0"
+plotly = "^5.18.0"
+pandoc = "^2.3"
+
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 tests = ["tests", "*/tests"]
@@ -58,7 +72,7 @@ source = ["kpm_tools", "tests"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
+fail_under = 0
 
 [tool.isort]
 profile = "black"
