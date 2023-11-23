@@ -4,8 +4,9 @@ Defined both with open boundary and periodic boundary conditions.
 """
 from itertools import product
 
-import kwant
 import numpy as np
+
+import kwant
 from kwant import HoppingKind
 
 
