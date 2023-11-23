@@ -9,5 +9,6 @@ extensions = [
     "myst_parser",
     "nbsphinx",
 ]
+nbsphinx_allow_errors = True
 autodoc_typehints = "description"
 html_theme = "furo"
