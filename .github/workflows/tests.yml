@@ -49,7 +49,7 @@ jobs:
       - name: Install Python dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
-          pip install cython, numpy, scipy, sympy, tinyarray
+          pip install cython numpy scipy sympy tinyarray
 
       - name: Clone and Install kwant (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
