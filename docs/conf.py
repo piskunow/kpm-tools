@@ -8,6 +8,7 @@ import sys
 project = "KPM Tools"
 author = "Pablo Piskunow"
 copyright = "2023, Pablo Piskunow"
+autodoc_mock_imports = ["kwant"]
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
@@ -46,29 +47,30 @@ nbsphinx_prolog = r"""
 
 
 def linkcode_resolve(domain, info):
-    """Resolve links to source."""
+    """Resolve and link to source."""
     if domain != "py":
         return None
     if not info["module"]:
         return None
 
-    # Replace with your project's GitHub repository URL
+    # Determine the branch based on RTD version
+    rtd_version = os.getenv("READTHEDOCS_VERSION", "latest")
+    github_branch = "develop" if rtd_version == "latest" else "main"
+
     github_repo = "https://github.com/piskunow/kpm-tools"
 
-    # Get the module object
     module = sys.modules.get(info["module"])
     if module is None:
         return None
 
-    # Get the source file path of the module
     filename = inspect.getsourcefile(module)
     if filename is None:
         return None
 
-    # Trim the filename to a path relative to the project root
-    rel_fn = os.path.relpath(filename, start=os.path.dirname(__file__))
+    # Adjust the file path for the repository structure
+    package_dir = "src/kpm_tools"
+    rel_fn = os.path.relpath(filename, start=os.path.dirname(package_dir))
 
-    # Get the line number of the object within the module
     obj = module
     for part in info["fullname"].split("."):
         obj = getattr(obj, part, None)
@@ -77,9 +79,7 @@ def linkcode_resolve(domain, info):
         return None
 
     try:
-        lines, _ = inspect.getsourcelines(obj)
+        line = inspect.getsourcelines(obj)[1]
+        return f"{github_repo}/blob/{github_branch}/{rel_fn}#L{line}"
     except Exception:
         return None
-
-    line = inspect.getsourcelines(obj)[1]
-    return f"{github_repo}/blob/main/{rel_fn}#L{line}"

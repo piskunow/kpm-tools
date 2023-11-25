@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kpm-tools"
-version = "0.0.2"
+version = "0.0.3"
 description = "KPM Tools"
 authors = ["Pablo Piskunow <kpm@piskunow.com>"]
 license = "BSD 2-Clause"
