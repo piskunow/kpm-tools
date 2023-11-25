@@ -6,7 +6,7 @@ end-before: <!-- github-only -->
 
 [license]: license
 [contributor guide]: contributing
-[Python API]: api
+[python api]: api
 
 ```{toctree}
 ---

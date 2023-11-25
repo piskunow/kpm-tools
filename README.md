@@ -83,4 +83,4 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 
 [license]: https://github.com/piskunow/kpm-tools/blob/main/LICENSE
 [contributor guide]: https://github.com/piskunow/kpm-tools/blob/main/CONTRIBUTING.md
-[Python API reference]: https://kpm-tools.readthedocs.io/en/latest/api.html
+[python api reference]: https://kpm-tools.readthedocs.io/en/latest/api.html
