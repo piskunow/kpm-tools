@@ -24,16 +24,15 @@ class IteratorKPM:
 
     This iterator yields vectors as
 
-    .. math::
-        T_n(H) \rvert v \langle
+    `T_n(H) | v >`
 
-    for vectors :math:`\rvert v \langle` in ``vectors``,
+    for vectors `| v >` in `vectors`,
     for 'n' in '[0, max_moments]'.
 
     Notes
     -----
-    Returns a sequence of expanded vectors of shape ``(M, N)``.
-    If the input is a vector then ``M=1``.
+    Returns a sequence of expanded vectors of shape `(M, N)`.
+    If the input is a vector then `M=1`.
     """
 
     def __init__(self, ham, vectors, max_moments=None, operator=None, num_threads=None):
@@ -377,11 +376,11 @@ class SpectralDensityIterator(_BaseKPM, kwant.kpm.SpectralDensity):
         ----------
         num_moments: positive int
             The number of Chebyshev moments to add. Mutually
-            exclusive with ``energy_resolution``.
+            exclusive with `energy_resolution`.
         energy_resolution: positive float, optional
             Features wider than this resolution are visible
             in the spectral density. Mutually exclusive with
-            ``num_moments``.
+            `num_moments`.
 
         """
         new_moments = _normalize_num_moments(num_moments, energy_resolution, self._a)
@@ -485,11 +484,11 @@ class GeneralVectorExpansion(_BaseKPM):
         ----------
         num_moments: positive int
             The number of Chebyshev moments to add. Mutually
-            exclusive with ``energy_resolution``.
+            exclusive with `energy_resolution`.
         energy_resolution: positive float, optional
             Features wider than this resolution are visible
             in the spectral density. Mutually exclusive with
-            ``num_moments``.
+            `num_moments`.
 
         """
         new_moments = _normalize_num_moments(num_moments, energy_resolution, self._a)
