@@ -62,9 +62,9 @@ def linkcode_resolve(domain, info):
     if module is None:
         return None
 
-    # avoid math directive to be parsed by this extension.
-    if "kpm_generator" in info["module"].split("."):
-        return None
+    # # avoid math directive to be parsed by this extension.
+    # if "kpm_generator" in info["module"].split("."):
+    #     return None
 
     # Get the source file path of the module
     filename = sphinx_inspect.getsourcefile(module)
