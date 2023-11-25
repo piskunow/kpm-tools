@@ -10,7 +10,6 @@ import warnings
 import numpy as np
 import tinyarray as ta
 
-import kwant
 from kwant._common import get_parameters
 from kwant._common import memoize
 from kwant.builder import Builder
