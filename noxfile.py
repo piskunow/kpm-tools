@@ -182,6 +182,7 @@ def precommit(session: Session) -> None:
         "pre-commit-hooks",
         "pyupgrade",
     )
+
     session.run("pre-commit", *args)
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
@@ -211,6 +212,10 @@ def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
     session.install("coverage[toml]", "pytest", "pygments")
+
+    # Call the kwant installation functions
+    build_kwant(session)
+
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -236,6 +241,10 @@ def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
     session.install("pytest", "typeguard", "pygments")
+
+    # Call the kwant installation functions
+    build_kwant(session)
+
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
@@ -250,6 +259,7 @@ def xdoctest(session: Session) -> None:
             args.append("--colored=1")
 
     session.install(".")
+
     session.install("xdoctest[colors]")
     session.run("python", "-m", "xdoctest", *args)
 
