@@ -121,8 +121,11 @@ def build_kwant(session: Session):
     """Build and install kwant from source."""
     session.install("cython", "numpy", "scipy", "sympy", "tinyarray")
 
+    # Store the original directory
+    original_dir = Path.cwd()
+
     # temp folder
-    kwant_dir = os.path.join(session.create_tmp(), "kwant")
+    kwant_dir = Path(session.create_tmp()) / "kwant"
 
     need_to_build = False
     # Check if kwant directory exists
@@ -141,7 +144,7 @@ def build_kwant(session: Session):
         )
 
     # Navigate to the cloned directory
-    session.cd(kwant_dir)
+    session.cd(str(kwant_dir))
 
     # Checkout the master branch
     session.run("git", "checkout", "master", external=True)
@@ -150,6 +153,10 @@ def build_kwant(session: Session):
     if need_to_build:
         session.run("python", "setup.py", "build")
     session.run("python", "setup.py", "install")
+
+    # Return to the original directory and remove the kwant directory
+    session.cd(str(original_dir))
+    shutil.rmtree(str(kwant_dir))
 
 
 @session(name="pre-commit", python=python_versions[0])
@@ -259,6 +266,9 @@ def docs_build(session: Session) -> None:
         "sphinx", "sphinx-click", "nbsphinx", "pandoc", "furo", "myst-parser"
     )
 
+    # Call the kwant installation functions
+    build_kwant(session)
+
     build_dir = Path("docs", "_build")
     if build_dir.exists():
         shutil.rmtree(build_dir)
@@ -281,6 +291,9 @@ def docs(session: Session) -> None:
         "nbsphinx",
         "pandoc",
     )
+
+    # Call the kwant installation functions
+    build_kwant(session)
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
