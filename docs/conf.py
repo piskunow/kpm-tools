@@ -48,6 +48,7 @@ nbsphinx_prolog = r"""
 
 
 def linkcode_resolve(domain, info):
+    """Resolve links to source."""
     if domain != "py":
         return None
     if not info["module"]:
