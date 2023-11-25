@@ -1,6 +1,7 @@
 """Sphinx configuration."""
 
 import inspect
+import os
 import sys
 
 
@@ -46,11 +47,15 @@ nbsphinx_prolog = r"""
 
 
 def linkcode_resolve(domain, info):
-    """Parse links to source."""
+    """Resolve and link to source."""
     if domain != "py":
         return None
     if not info["module"]:
         return None
+
+    # Determine the branch based on RTD version
+    rtd_version = os.getenv("READTHEDOCS_VERSION", "latest")
+    github_branch = "develop" if rtd_version == "latest" else "main"
 
     github_repo = "https://github.com/piskunow/kpm-tools"
 
@@ -58,25 +63,23 @@ def linkcode_resolve(domain, info):
     if module is None:
         return None
 
+    filename = inspect.getsourcefile(module)
+    if filename is None:
+        return None
+
+    # Adjust the file path for the repository structure
+    package_dir = "src/kpm_tools"
+    rel_fn = os.path.relpath(filename, start=os.path.dirname(package_dir))
+
+    obj = module
+    for part in info["fullname"].split("."):
+        obj = getattr(obj, part, None)
+
+    if obj is None:
+        return None
+
     try:
-        filename = inspect.getsourcefile(module)
-        if filename is None:
-            return None
-
-        # Assuming your package is installed in 'site-packages'
-        # and the source is in 'src/kpm_tools' in the repo
-        src_path = filename.split("site-packages")[1]
-        rel_fn = "src" + src_path
-
-        obj = module
-        for part in info["fullname"].split("."):
-            obj = getattr(obj, part, None)
-
-        if obj is None:
-            return None
-
         line = inspect.getsourcelines(obj)[1]
-        return f"{github_repo}/blob/develop/{rel_fn}#L{line}"
-    except Exception as e:
-        print(f"Error generating linkcode URL for {info['module']}: {e}")
+        return f"{github_repo}/blob/{github_branch}/{rel_fn}#L{line}"
+    except Exception:
         return None
