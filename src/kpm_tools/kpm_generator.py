@@ -25,7 +25,7 @@ class IteratorKPM:
 
     This iterator yields vectors as
     .. math::
-      T_n(H) \\rvert v \\langle
+        T_n(H) \\rvert v \\langle
 
     for vectors :math:`\\rvert v \\langle` in ``vectors``,
     for 'n' in '[0, max_moments]'.
