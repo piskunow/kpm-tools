@@ -2,9 +2,8 @@
 
 from collections import defaultdict
 
-import numpy as np
-
 import kwant
+import numpy as np
 from kwant._common import ensure_rng
 
 

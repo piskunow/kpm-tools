@@ -2,12 +2,11 @@
 
 from collections import OrderedDict
 
+import kwant
 import numpy as np
 from matplotlib.colors import ListedColormap
 from matplotlib.pylab import cm
 from scipy.sparse import diags
-
-import kwant
 
 
 def identity_operator(x):

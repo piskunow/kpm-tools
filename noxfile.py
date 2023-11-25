@@ -121,8 +121,11 @@ def build_kwant(session: Session):
     """Build and install kwant from source."""
     session.install("cython", "numpy", "scipy", "sympy", "tinyarray")
 
+    # Store the original directory
+    original_dir = Path.cwd()
+
     # temp folder
-    kwant_dir = os.path.join(session.create_tmp(), "kwant")
+    kwant_dir = Path(session.create_tmp()) / "kwant"
 
     need_to_build = False
     # Check if kwant directory exists
@@ -141,7 +144,7 @@ def build_kwant(session: Session):
         )
 
     # Navigate to the cloned directory
-    session.cd(kwant_dir)
+    session.cd(str(kwant_dir))
 
     # Checkout the master branch
     session.run("git", "checkout", "master", external=True)
@@ -150,6 +153,10 @@ def build_kwant(session: Session):
     if need_to_build:
         session.run("python", "setup.py", "build")
     session.run("python", "setup.py", "install")
+
+    # Return to the original directory and remove the kwant directory
+    session.cd(str(original_dir))
+    shutil.rmtree(str(kwant_dir))
 
 
 @session(name="pre-commit", python=python_versions[0])
@@ -175,6 +182,7 @@ def precommit(session: Session) -> None:
         "pre-commit-hooks",
         "pyupgrade",
     )
+
     session.run("pre-commit", *args)
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
@@ -204,6 +212,10 @@ def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
     session.install("coverage[toml]", "pytest", "pygments")
+
+    # Call the kwant installation functions
+    build_kwant(session)
+
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -229,6 +241,10 @@ def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
     session.install("pytest", "typeguard", "pygments")
+
+    # Call the kwant installation functions
+    build_kwant(session)
+
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
@@ -243,6 +259,7 @@ def xdoctest(session: Session) -> None:
             args.append("--colored=1")
 
     session.install(".")
+
     session.install("xdoctest[colors]")
     session.run("python", "-m", "xdoctest", *args)
 
@@ -258,6 +275,9 @@ def docs_build(session: Session) -> None:
     session.install(
         "sphinx", "sphinx-click", "nbsphinx", "pandoc", "furo", "myst-parser"
     )
+
+    # Call the kwant installation functions
+    build_kwant(session)
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -281,6 +301,9 @@ def docs(session: Session) -> None:
         "nbsphinx",
         "pandoc",
     )
+
+    # Call the kwant installation functions
+    build_kwant(session)
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
