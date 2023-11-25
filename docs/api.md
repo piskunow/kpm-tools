@@ -1,4 +1,4 @@
-# Usage
+# Python API
 
 ```{eval-rst}
 .. click:: kpm_tools.__main__:main
@@ -11,7 +11,7 @@ Each of the following sections describes the usage of different modules in the `
 ## Bloch Module
 
 ```{eval-rst}
-.. automodule:: kpm_tools
+.. automodule:: kpm_tools.bloch
     :members:
     :undoc-members:
     :show-inheritance:
