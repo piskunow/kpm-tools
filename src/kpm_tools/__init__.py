@@ -1,4 +1,5 @@
 """KPM Tools."""
+# flake8: noqa
 from .bloch import _hopping_distance
 from .bloch import separate_bloch_components
 from .bloch import wrap_distance
