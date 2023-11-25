@@ -8,6 +8,7 @@ import sys
 project = "KPM Tools"
 author = "Pablo Piskunow"
 copyright = "2023, Pablo Piskunow"
+autodoc_mock_imports = ["kwant"]
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",

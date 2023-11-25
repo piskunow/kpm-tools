@@ -52,7 +52,7 @@ $ pip install kpm-tools
 
 ## Python API
 
-Please see the [Python API reference] for details.
+Please see the [python api reference] for details.
 
 ## Contributing
 

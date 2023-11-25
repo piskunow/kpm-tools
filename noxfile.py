@@ -276,9 +276,6 @@ def docs_build(session: Session) -> None:
         "sphinx", "sphinx-click", "nbsphinx", "pandoc", "furo", "myst-parser"
     )
 
-    # Call the kwant installation functions
-    build_kwant(session)
-
     build_dir = Path("docs", "_build")
     if build_dir.exists():
         shutil.rmtree(build_dir)
@@ -301,9 +298,6 @@ def docs(session: Session) -> None:
         "nbsphinx",
         "pandoc",
     )
-
-    # Call the kwant installation functions
-    build_kwant(session)
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
