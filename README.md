@@ -27,11 +27,20 @@
 
 ## Features
 
-- TODO
+- KPM expansion of typical spectal functions
+  - Density of states
+  - Green's functions
+  - Kubo conductivity
+  - Chern marker
+- Time evolution
+- Tools for system with periodic boundaries
+  - KPM vector factories that produces tiles
+  - Velocity operators adapted to periodic boundaries
+  - Distance operators adapted to periodic boundaries
 
 ## Requirements
 
-- TODO
+- Python >=3.9
 
 ## Installation
 
@@ -41,9 +50,9 @@ You can install _KPM Tools_ via [pip] from [PyPI]:
 $ pip install kpm-tools
 ```
 
-## Usage
+## Python API
 
-Please see the [Command-line Reference] for details.
+Please see the [Python API reference] for details.
 
 ## Contributing
 
@@ -74,4 +83,4 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 
 [license]: https://github.com/piskunow/kpm-tools/blob/main/LICENSE
 [contributor guide]: https://github.com/piskunow/kpm-tools/blob/main/CONTRIBUTING.md
-[command-line reference]: https://kpm-tools.readthedocs.io/en/latest/usage.html
+[python api reference]: https://kpm-tools.readthedocs.io/en/latest/api.html

@@ -9,12 +9,6 @@ import warnings
 
 import numpy as np
 import tinyarray as ta
-
-import kwant
-
-
-if kwant.__version__ < "1.5":
-    raise ImportError("This module does not work with versions of Kwant " "<= 1.4.2.")
 from kwant._common import get_parameters
 from kwant._common import memoize
 from kwant.builder import Builder
