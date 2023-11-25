@@ -27,11 +27,20 @@
 
 ## Features
 
-- TODO
+- KPM expansion of typical spectal functions
+  - Density of states
+  - Green's functions
+  - Kubo conductivity
+  - Chern marker
+- Time evolution
+- Tools for system with periodic boundaries
+  - KPM vector factories that produces tiles
+  - Velocity operators adapted to periodic boundaries
+  - Distance operators adapted to periodic boundaries
 
 ## Requirements
 
-- TODO
+- Python >=3.9
 
 ## Installation
 
