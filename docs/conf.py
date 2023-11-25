@@ -4,8 +4,6 @@ import inspect
 import os
 import sys
 
-from sphinx.util import inspect as sphinx_inspect
-
 
 project = "KPM Tools"
 author = "Pablo Piskunow"
@@ -63,7 +61,7 @@ def linkcode_resolve(domain, info):
         return None
 
     # Get the source file path of the module
-    filename = sphinx_inspect.getsourcefile(module)
+    filename = inspect.getsourcefile(module)
     if filename is None:
         return None
 
