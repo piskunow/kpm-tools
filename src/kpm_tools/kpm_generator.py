@@ -23,20 +23,17 @@ class IteratorKPM:
     r"""Iterator of KPM vectors.
 
     This iterator yields vectors as
+
     .. math::
         T_n(H) \rvert v \langle
 
     for vectors :math:`\rvert v \langle` in ``vectors``,
     for 'n' in '[0, max_moments]'.
 
-
-
-
     Notes
     -----
     Returns a sequence of expanded vectors of shape ``(M, N)``.
     If the input is a vector then ``M=1``.
-
     """
 
     def __init__(self, ham, vectors, max_moments=None, operator=None, num_threads=None):
