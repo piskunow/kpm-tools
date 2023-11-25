@@ -16,7 +16,6 @@ maxdepth: 1
 
 Tutorials <tutorials>
 api
-<!-- reference -->
 contributing
 Code of Conduct <codeofconduct>
 License <license>
