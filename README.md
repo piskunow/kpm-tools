@@ -1,7 +1,3 @@
-# kpm-tools
-
-=======
-
 # KPM Tools
 
 [![PyPI](https://img.shields.io/pypi/v/kpm-tools.svg)][pypi_]
@@ -25,18 +21,13 @@
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [black]: https://github.com/psf/black
 
+KPM Tools is an open-source Python package that extends the Kernel Polynomial Method (KPM) functionalities of [Kwant](https://kwant-project.org/), a popular software for quantum transport simulations in tight-binding models. Our package specifically enhances the KPM expansion capabilities within the realm of closed tight-binding systems.
+
 ## Features
 
-- KPM expansion of typical spectal functions
-  - Density of states
-  - Green's functions
-  - Kubo conductivity
-  - Chern marker
-- Time evolution
-- Tools for system with periodic boundaries
-  - KPM vector factories that produces tiles
-  - Velocity operators adapted to periodic boundaries
-  - Distance operators adapted to periodic boundaries
+- Advanced KPM expansion of typical spectral functions like Density of States, Green's Functions, Kubo Conductivity, and Chern Markers.
+- Extremely efficient time evolution operator expansion
+- Additional functionalities like KPM vector factories producing tiles, and velocity and distance operators adapted to periodic boundaries.
 
 ## Requirements
 
@@ -56,8 +47,7 @@ Please see the [python api reference] for details.
 
 ## Contributing
 
-Contributions are very welcome.
-To learn more, see the [Contributor Guide].
+Contributions, especially in documentation and the 'concatenator' function/module, are very welcome. For more information, see our [Contributor Guide].
 
 ## License
 
@@ -70,6 +60,21 @@ If you encounter any problems,
 please [file an issue] along with a detailed description.
 
 ## Credits
+
+Many of the ideas implemented in KPM Tools originate from the early work on KPM expansion on the paper
+
+_Computation of topological phase diagram of disordered PbSnTe using the kernel polynomial method_.
+
+[Phys. Rev. Research 2, 013229 (2020)](https://doi.org/10.48550/arXiv.1905.02215)
+[arXiv:1905:02215](https://arxiv.org/abs/1905.02215)
+
+Consider citing that work if you use this package on a publication.
+
+### Acknowledgments to Kwant
+
+KPM Tools is built upon the robust and efficient foundation provided by Kwant. We extend our gratitude to the Kwant authors and contributors for their work in developing a versatile platform for quantum transport simulations. KPM Tools aims to complement Kwant's capabilities in KPM expansions, adhering to the high standards of quality and performance set by the Kwant project.
+
+### Project Template
 
 This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter] template.
 

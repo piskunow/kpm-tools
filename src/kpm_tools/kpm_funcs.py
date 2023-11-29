@@ -8,7 +8,7 @@ from .kpm_generator import general_function
 
 
 def greens_function(syst, params, **kwargs):
-    """Build a Green's function operator using KPM.
+    """Build the retarded Green's function operator using KPM.
 
     Returns a function that takes an energy or a list of energies, and returns
     the Green's function with that energy acting on `vectors`.
@@ -38,15 +38,17 @@ def greens_function(syst, params, **kwargs):
         acting on the vectors, for those energies.
 
     """
-    return general_function(syst, params, coef_function=coef_greens_function, **kwargs)
+    return general_function(
+        syst, params, coef_function=coef_greens_function_r, **kwargs
+    )
 
 
 def delta_function(syst, params, **kwargs):
-    """Build a projector over the occupied energies.
+    """Build a projector onto the Fermi energy.
 
     Returns a function that takes a Fermi energy, and returns the
-    projection of the `vectors` over the occupied energies of the
-    Hamiltonian.
+    projection of the `vectors` onto the states that have the
+    same Fermi energy.
 
     Parameters
     ----------
