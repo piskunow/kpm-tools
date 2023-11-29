@@ -74,6 +74,10 @@ Consider citing that work if you use this package on a publication.
 
 KPM Tools is built upon the robust and efficient foundation provided by Kwant. We extend our gratitude to the Kwant authors and contributors for their work in developing a versatile platform for quantum transport simulations. KPM Tools aims to complement Kwant's capabilities in KPM expansions, adhering to the high standards of quality and performance set by the Kwant project.
 
+See the original KPM implementation in Kwant:
+https://kwant-project.org/doc/1/tutorial/kpm
+https://kwant-project.org/doc/1/reference/kwant.kpm
+
 ### Project Template
 
 This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter] template.
