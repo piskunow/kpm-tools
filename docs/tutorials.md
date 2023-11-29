@@ -6,6 +6,7 @@ maxdepth: 1
 ---
 
 tutorials/tutorial_operator_and_functions
+tutorials/tutorial_conductivity
 tutorials/tutorial_bloch
 tutorials/tutorial_tiles
 tutorials/tutorial_time_evolution
