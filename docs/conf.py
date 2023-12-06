@@ -46,42 +46,44 @@ nbsphinx_prolog = r"""
   """  # noqa: B950
 
 
+def get_object_line_number(info):
+    """Return object line number from module."""
+    try:
+        module = sys.modules.get(info["module"])
+        if module is None:
+            return None
+
+        # walk through the nested module structure
+        obj = module
+        for part in info["fullname"].split("."):
+            obj = getattr(obj, part, None)
+            if obj is None:
+                return None
+
+        return inspect.getsourcelines(obj)[1]
+    except (TypeError, OSError):
+        return None
+
+
 def linkcode_resolve(domain, info):
-    """Resolve and link to source."""
+    """Point to the source code repository, file and line number."""
+    # only add links to python modules
     if domain != "py":
         return None
     if not info["module"]:
+        return None
+
+    filename = "src/" + info["module"].replace(".", "/")
+
+    # point to the right repository, branch, file and line
+    github_repo = "https://github.com/piskunow/kpm-tools"
+
+    line = get_object_line_number(info)
+    if line is None:
         return None
 
     # Determine the branch based on RTD version
     rtd_version = os.getenv("READTHEDOCS_VERSION", "latest")
     github_branch = "develop" if rtd_version == "latest" else "main"
 
-    github_repo = "https://github.com/piskunow/kpm-tools"
-
-    module = sys.modules.get(info["module"])
-    if module is None:
-        return None
-
-    try:
-        filename = inspect.getsourcefile(module)
-        if filename is None:
-            return None
-
-        # Assuming your package is installed in 'site-packages'
-        # and the source is in 'src/kpm_tools' in the repo
-        src_path = filename.split("site-packages")[1]
-        rel_fn = "src" + src_path
-
-        obj = module
-        for part in info["fullname"].split("."):
-            obj = getattr(obj, part, None)
-
-        if obj is None:
-            return None
-
-        line = inspect.getsourcelines(obj)[1]
-        return f"{github_repo}/blob/{github_branch}/{rel_fn}#L{line}"
-    except Exception as e:
-        print(f"Error generating linkcode URL for {info['module']}: {e}")
-        return None
+    return f"{github_repo}/blob/{github_branch}/{filename}.py#L{line}"
