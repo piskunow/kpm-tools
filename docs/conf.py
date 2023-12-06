@@ -84,6 +84,6 @@ def linkcode_resolve(domain, info):
 
     # Determine the branch based on RTD version
     rtd_version = os.getenv("READTHEDOCS_VERSION", "latest")
-    github_branch = "develop" if rtd_version == "latest" else "main"
+    github_branch = "develop" if rtd_version == "develop" else "main"
 
     return f"{github_repo}/blob/{github_branch}/{filename}.py#L{line}"
