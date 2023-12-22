@@ -6,11 +6,11 @@ import cmath
 import collections
 import inspect
 import warnings
+from functools import cache
 
 import numpy as np
 import tinyarray as ta
 from kwant._common import get_parameters
-from kwant._common import memoize
 from kwant.builder import Builder
 from kwant.builder import herm_conj
 from kwant.lattice import TranslationalSymmetry
@@ -55,7 +55,7 @@ def wraparound_by_parts(
 
     """
 
-    @memoize
+    @cache
     def bind_site(val):
         def f(*args):
             a, *args = args
@@ -66,7 +66,7 @@ def wraparound_by_parts(
         _set_signature(f, get_parameters(val) + momenta)
         return f
 
-    @memoize
+    @cache
     def bind_hopping_as_site(elem, val):
         def f(*args):
             a, *args = args
@@ -81,7 +81,7 @@ def wraparound_by_parts(
         _set_signature(f, params + momenta)
         return f
 
-    @memoize
+    @cache
     def bind_hopping(elem, val):
         def f(*args):
             a, b, *args = args
@@ -95,7 +95,7 @@ def wraparound_by_parts(
         _set_signature(f, params + momenta)
         return f
 
-    @memoize
+    @cache
     def bind_sum(num_sites, *vals):
         """Construct joint signature for all 'vals'."""
 
@@ -376,7 +376,7 @@ def wrap_velocity(builder):
     direction = ("direction",)
     dnp = -len(direction)
 
-    @memoize
+    @cache
     def bind_velocity_hopping(val):
         def f(*args):
             a, b, *args = args  # first two args are sites
