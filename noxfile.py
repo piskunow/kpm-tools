@@ -112,8 +112,8 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 
 @nox.session(python=python_versions)
 def install_kwant(session: Session):
-    """Install kwant from source."""
-    session.install("cython", "numpy", "scipy", "sympy", "tinyarray", "kwant")
+    """Install kwant from PyPi."""
+    session.install("kwant")
 
 
 @nox.session(python=python_versions)
@@ -214,7 +214,7 @@ def tests(session: Session) -> None:
     session.install("coverage[toml]", "pytest", "pygments")
 
     # Call the kwant installation functions
-    build_kwant(session)
+    install_kwant(session)
 
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
@@ -243,7 +243,7 @@ def typeguard(session: Session) -> None:
     session.install("pytest", "typeguard", "pygments")
 
     # Call the kwant installation functions
-    build_kwant(session)
+    install_kwant(session)
 
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
