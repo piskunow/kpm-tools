@@ -11,11 +11,11 @@ from functools import cache
 import numpy as np
 import tinyarray as ta
 from kwant.builder import Builder
+from kwant.builder import HermConjOfFunc
 from kwant.builder import herm_conj
 from kwant.lattice import TranslationalSymmetry
 from kwant.system import SiteArray
 from kwant.wraparound import WrappedBuilder
-from kwant.wraparound import _callable_herm_conj
 from kwant.wraparound import _set_signature
 from kwant.wraparound import wraparound
 
@@ -55,6 +55,11 @@ def wraparound_by_parts(
     format. It will be deprecated in the 2.0 release of Kwant.
 
     """
+
+    @cache
+    def _callable_herm_conj(val):
+        """Keep the same id for every 'val'."""
+        return HermConjOfFunc(val)
 
     @cache
     def bind_site(val):
