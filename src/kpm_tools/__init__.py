@@ -1,5 +1,12 @@
 """KPM Tools."""
 # flake8: noqa
+try:
+    import kwant
+except ImportError:
+    raise ImportError(
+        "Missing dependency 'kwant'. Please install it manually. "
+        "Visit https://kwant-project.org/ for installation instructions."
+    )
 from .bloch import _hopping_distance
 from .bloch import separate_bloch_components
 from .bloch import wrap_distance

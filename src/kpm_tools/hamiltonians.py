@@ -6,7 +6,7 @@ from itertools import product
 
 import kwant
 import numpy as np
-from kwant import HoppingKind
+from kwant.builder import HoppingKind
 
 
 # neighbors for honeycomb lattice

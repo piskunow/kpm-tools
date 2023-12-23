@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kpm-tools"
-version = "0.0.7"
+version = "0.0.8"
 description = "KPM Tools"
 authors = ["Pablo Piskunow <kpm@piskunow.com>"]
 license = "BSD 2-Clause"
@@ -51,6 +51,10 @@ sphinx-click = ">=3.0.2"
 typeguard = ">=2.13.3"
 xdoctest = {extras = ["colors"], version = ">=0.15.10"}
 myst-parser = {version = ">=0.16.1"}
+kwant = { version = "^1.4.4", optional = true }
+
+[tool.poetry.extras]
+kwant = ["kwant"]
 
 [tool.poetry.scripts]
 kpm-tools = "kpm_tools.__main__:main"

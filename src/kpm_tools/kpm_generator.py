@@ -14,6 +14,7 @@ from scipy.sparse import identity
 from scipy.sparse.linalg import eigsh
 
 from .common import identity_operator
+from .utils import ensure_rng
 
 
 DEFAULT_MOMENTS = 100
@@ -245,7 +246,7 @@ class _BaseKPM:
         self.operator = _normalize_operator(operator, params)
 
         self.mean = mean
-        rng0 = kwant._common.ensure_rng(rng)
+        rng0 = ensure_rng(rng)
 
         _v0 = None
         if bounds is None:
