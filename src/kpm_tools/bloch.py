@@ -6,19 +6,23 @@ import cmath
 import collections
 import inspect
 import warnings
+from functools import cache
 
+import kwant.system
 import numpy as np
 import tinyarray as ta
-from kwant._common import get_parameters
-from kwant._common import memoize
 from kwant.builder import Builder
+from kwant.builder import HermConjOfFunc
 from kwant.builder import herm_conj
 from kwant.lattice import TranslationalSymmetry
-from kwant.system import SiteArray
 from kwant.wraparound import WrappedBuilder
-from kwant.wraparound import _callable_herm_conj
 from kwant.wraparound import _set_signature
 from kwant.wraparound import wraparound
+
+from .utils import get_parameters
+
+
+support_site_array = hasattr(kwant.system, "SiteArray")
 
 
 def wraparound_by_parts(
@@ -55,7 +59,12 @@ def wraparound_by_parts(
 
     """
 
-    @memoize
+    @cache
+    def _callable_herm_conj(val):
+        """Keep the same id for every 'val'."""
+        return HermConjOfFunc(val)
+
+    @cache
     def bind_site(val):
         def f(*args):
             a, *args = args
@@ -66,7 +75,7 @@ def wraparound_by_parts(
         _set_signature(f, get_parameters(val) + momenta)
         return f
 
-    @memoize
+    @cache
     def bind_hopping_as_site(elem, val):
         def f(*args):
             a, *args = args
@@ -81,7 +90,7 @@ def wraparound_by_parts(
         _set_signature(f, params + momenta)
         return f
 
-    @memoize
+    @cache
     def bind_hopping(elem, val):
         def f(*args):
             a, b, *args = args
@@ -95,7 +104,7 @@ def wraparound_by_parts(
         _set_signature(f, params + momenta)
         return f
 
-    @memoize
+    @cache
     def bind_sum(num_sites, *vals):
         """Construct joint signature for all 'vals'."""
 
@@ -203,7 +212,8 @@ def wraparound_by_parts(
     ret.particle_hole = None
     ret.time_reversal = None
 
-    ret.vectorize = builder.vectorize
+    if hasattr(builder, "vectorize"):
+        ret.vectorize = builder.vectorize
 
     sites = {}
     hops = collections.defaultdict(list)
@@ -340,6 +350,23 @@ def separate_bloch_components(builder):
     return fsyst_bloch_superonsite, fsyst_bloch_superhopping
 
 
+def _get_positions(site):
+    """Extract positions from a site. Handles both Site and SiteArray.
+
+    Args:
+    - site (Any): A Site or SiteArray object.
+
+    Returns:
+    - np.ndarray: Position array.
+    """
+    if hasattr(site, "positions"):  # Handle SiteArray
+        return site.positions().transpose()
+    if hasattr(site, "pos"):  # Handle Site
+        return site.pos
+    else:
+        raise TypeError("The site object does not have a valid position attribute.")
+
+
 def _hopping_distance(site1, site2, direction):
     norbs = site1.family.norbs
     if norbs != site2.family.norbs:
@@ -347,14 +374,12 @@ def _hopping_distance(site1, site2, direction):
             "Only hopppings between sites of equal number of orbitals is implemented."
         )
 
-    if isinstance(site1, SiteArray):
-        pos1 = site1.positions().transpose()
-        pos2 = site2.positions().transpose()
-        d = np.dot(direction, (pos1 - pos2))[:, np.newaxis, np.newaxis]
-    else:
-        pos1 = site1.pos
-        pos2 = site2.pos
-        d = np.dot(direction, (pos1 - pos2))
+    pos1 = _get_positions(site1)
+    pos2 = _get_positions(site2)
+    d = np.dot(direction, (pos1 - pos2))
+
+    if support_site_array and hasattr(site1, "positions"):
+        d = d[:, np.newaxis, np.newaxis]
 
     # return an imaginary number so that the matrix is antisymmetric
     # but hermitian
@@ -376,7 +401,7 @@ def wrap_velocity(builder):
     direction = ("direction",)
     dnp = -len(direction)
 
-    @memoize
+    @cache
     def bind_velocity_hopping(val):
         def f(*args):
             a, b, *args = args  # first two args are sites
@@ -392,7 +417,10 @@ def wrap_velocity(builder):
         _set_signature(f, params + direction)
         return f
 
-    velocity_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    if hasattr(builder, "vectorize"):
+        velocity_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    else:
+        velocity_builder = Builder(builder.symmetry)
 
     for s in builder.sites():
         norbs = s.family.norbs
@@ -419,7 +447,10 @@ def wrap_distance(builder):
     Hamiltonian of the original system, and does not depends on the
     paramters of the original system, the 'builder'.
     """
-    distance_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    if hasattr(builder, "vectorize"):
+        distance_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    else:
+        distance_builder = Builder(builder.symmetry)
 
     for s in builder.sites():
         norbs = s.family.norbs

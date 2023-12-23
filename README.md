@@ -32,14 +32,43 @@ KPM Tools is an open-source Python package that extends the Kernel Polynomial Me
 ## Requirements
 
 - Python >=3.9
+- Kwant >= 1.4.4
 
 ## Installation
+
+### Installing KPM Tools
 
 You can install _KPM Tools_ via [pip] from [PyPI]:
 
 ```console
 $ pip install kpm-tools
 ```
+
+### Important Note on Kwant Dependency
+
+While _KPM Tools_ requires Kwant to function, direct installation of Kwant via pip can sometimes be problematic due to its specific build requirements. To ensure a smooth setup, we recommend the following installation approach:
+
+1. **Try installing with pip (optional):**
+
+   You can attempt to install Kwant along with KPM Tools via pip:
+
+   ```console
+   $ pip install kpm-tools[kwant]
+   ```
+
+   If this installation fails, proceed to the next step.
+
+2. **Install Kwant using Conda or follow Kwant's installation guide:**
+
+   We recommend using Conda to install Kwant, which typically handles its build requirements more reliably:
+
+   ```console
+   $ conda install -c conda-forge kwant
+   ```
+
+   Alternatively, refer to the [Kwant installation page](https://kwant-project.org/install) for detailed instructions on installing Kwant in different environments.
+
+After installing Kwant, you can then install KPM Tools using pip as shown above.
 
 ## Python API
 

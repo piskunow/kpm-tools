@@ -112,8 +112,8 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 
 @nox.session(python=python_versions)
 def install_kwant(session: Session):
-    """Install kwant from source."""
-    session.install("cython", "numpy", "scipy", "sympy", "tinyarray", "kwant")
+    """Install kwant from PyPi."""
+    session.install("kwant")
 
 
 @nox.session(python=python_versions)
@@ -146,8 +146,8 @@ def build_kwant(session: Session):
     # Navigate to the cloned directory
     session.cd(str(kwant_dir))
 
-    # Checkout the master branch
-    session.run("git", "checkout", "master", external=True)
+    # Checkout the stable branch
+    session.run("git", "checkout", "stable", external=True)
 
     # Install kwant from source
     if need_to_build:
