@@ -213,6 +213,9 @@ def tests(session: Session) -> None:
     session.install(".")
     session.install("coverage[toml]", "pytest", "pygments")
 
+    # Call the kwant installation functions
+    build_kwant(session)
+
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -238,6 +241,9 @@ def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
     session.install("pytest", "typeguard", "pygments")
+
+    # Call the kwant installation functions
+    build_kwant(session)
 
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
