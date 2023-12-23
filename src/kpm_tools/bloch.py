@@ -212,7 +212,8 @@ def wraparound_by_parts(
     ret.particle_hole = None
     ret.time_reversal = None
 
-    ret.vectorize = builder.vectorize
+    if hasattr(builder, "vectorize"):
+        ret.vectorize = builder.vectorize
 
     sites = {}
     hops = collections.defaultdict(list)
@@ -416,7 +417,10 @@ def wrap_velocity(builder):
         _set_signature(f, params + direction)
         return f
 
-    velocity_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    if hasattr(builder, "vectorize"):
+        velocity_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    else:
+        velocity_builder = Builder(builder.symmetry)
 
     for s in builder.sites():
         norbs = s.family.norbs
@@ -443,7 +447,10 @@ def wrap_distance(builder):
     Hamiltonian of the original system, and does not depends on the
     paramters of the original system, the 'builder'.
     """
-    distance_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    if hasattr(builder, "vectorize"):
+        distance_builder = Builder(builder.symmetry, vectorize=builder.vectorize)
+    else:
+        distance_builder = Builder(builder.symmetry)
 
     for s in builder.sites():
         norbs = s.family.norbs
