@@ -29,6 +29,9 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import inspect
+import numbers
+
+import numpy as np
 
 
 def get_parameters(func):
@@ -65,3 +68,25 @@ def get_parameters(func):
         elif v.kind in (p.VAR_POSITIONAL, p.VAR_KEYWORD):
             error("Value functions must not take *args or **kwargs")
     return tuple(names)
+
+
+def ensure_rng(rng=None):
+    """Turn rng into a random number generator instance.
+
+    If rng is None, return the RandomState instance used by np.random.
+    If rng is an integer, return a new RandomState instance seeded with rng.
+    If rng is already a RandomState instance, return it.
+    Otherwise raise ValueError.
+    """
+    if rng is None:
+        return np.random.mtrand._rand
+    if isinstance(rng, numbers.Integral):
+        return np.random.RandomState(rng)
+    if all(
+        hasattr(rng, attr) for attr in ("random_sample", "randn", "randint", "choice")
+    ):
+        return rng
+    raise ValueError(
+        "Expecting a seed or an object that offers the "
+        "numpy.random.RandomState interface."
+    )

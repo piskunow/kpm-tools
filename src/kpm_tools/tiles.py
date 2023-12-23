@@ -4,7 +4,8 @@ from collections import defaultdict
 
 import kwant
 import numpy as np
-from kwant._common import ensure_rng
+
+from .utils import ensure_rng
 
 
 def momentum_to_ts(k, ts):
