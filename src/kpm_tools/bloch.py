@@ -8,18 +8,21 @@ import inspect
 import warnings
 from functools import cache
 
+import kwant.system
 import numpy as np
 import tinyarray as ta
 from kwant.builder import Builder
 from kwant.builder import HermConjOfFunc
 from kwant.builder import herm_conj
 from kwant.lattice import TranslationalSymmetry
-from kwant.system import SiteArray
 from kwant.wraparound import WrappedBuilder
 from kwant.wraparound import _set_signature
 from kwant.wraparound import wraparound
 
 from .utils import get_parameters
+
+
+support_site_array = hasattr(kwant.system, "SiteArray")
 
 
 def wraparound_by_parts(
@@ -346,6 +349,23 @@ def separate_bloch_components(builder):
     return fsyst_bloch_superonsite, fsyst_bloch_superhopping
 
 
+def _get_positions(site):
+    """Extract positions from a site. Handles both Site and SiteArray.
+
+    Args:
+    - site (Any): A Site or SiteArray object.
+
+    Returns:
+    - np.ndarray: Position array.
+    """
+    if hasattr(site, "positions"):  # Handle SiteArray
+        return site.positions().transpose()
+    if hasattr(site, "pos"):  # Handle Site
+        return site.pos
+    else:
+        raise TypeError("The site object does not have a valid position attribute.")
+
+
 def _hopping_distance(site1, site2, direction):
     norbs = site1.family.norbs
     if norbs != site2.family.norbs:
@@ -353,14 +373,12 @@ def _hopping_distance(site1, site2, direction):
             "Only hopppings between sites of equal number of orbitals is implemented."
         )
 
-    if isinstance(site1, SiteArray):
-        pos1 = site1.positions().transpose()
-        pos2 = site2.positions().transpose()
-        d = np.dot(direction, (pos1 - pos2))[:, np.newaxis, np.newaxis]
-    else:
-        pos1 = site1.pos
-        pos2 = site2.pos
-        d = np.dot(direction, (pos1 - pos2))
+    pos1 = _get_positions(site1)
+    pos2 = _get_positions(site2)
+    d = np.dot(direction, (pos1 - pos2))
+
+    if support_site_array and hasattr(site1, "positions"):
+        d = d[:, np.newaxis, np.newaxis]
 
     # return an imaginary number so that the matrix is antisymmetric
     # but hermitian
