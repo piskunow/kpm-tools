@@ -146,8 +146,8 @@ def build_kwant(session: Session):
     # Navigate to the cloned directory
     session.cd(str(kwant_dir))
 
-    # Checkout the master branch
-    session.run("git", "checkout", "master", external=True)
+    # Checkout the stable branch
+    session.run("git", "checkout", "stable", external=True)
 
     # Install kwant from source
     if need_to_build:
@@ -214,7 +214,7 @@ def tests(session: Session) -> None:
     session.install("coverage[toml]", "pytest", "pygments")
 
     # Call the kwant installation functions
-    install_kwant(session)
+    build_kwant(session)
 
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
@@ -243,7 +243,7 @@ def typeguard(session: Session) -> None:
     session.install("pytest", "typeguard", "pygments")
 
     # Call the kwant installation functions
-    install_kwant(session)
+    build_kwant(session)
 
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
