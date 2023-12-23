@@ -10,7 +10,6 @@ from functools import cache
 
 import numpy as np
 import tinyarray as ta
-from kwant._common import get_parameters
 from kwant.builder import Builder
 from kwant.builder import herm_conj
 from kwant.lattice import TranslationalSymmetry
@@ -19,6 +18,8 @@ from kwant.wraparound import WrappedBuilder
 from kwant.wraparound import _callable_herm_conj
 from kwant.wraparound import _set_signature
 from kwant.wraparound import wraparound
+
+from .utils import get_parameters
 
 
 def wraparound_by_parts(
