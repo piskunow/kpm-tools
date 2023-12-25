@@ -1434,13 +1434,13 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "jsonschema-specifications"
-version = "2023.11.2"
+version = "2023.12.1"
 description = "The JSON Schema meta-schemas and vocabularies, exposed as a Registry"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jsonschema_specifications-2023.11.2-py3-none-any.whl", hash = "sha256:e74ba7c0a65e8cb49dc26837d6cfe576557084a8b423ed16a420984228104f93"},
-    {file = "jsonschema_specifications-2023.11.2.tar.gz", hash = "sha256:9472fc4fea474cd74bea4a2b190daeccb5a9e4db2ea80efcf7a1b582fc9a81b8"},
+    {file = "jsonschema_specifications-2023.12.1-py3-none-any.whl", hash = "sha256:87e4fdf3a94858b8a2ba2778d9ba57d8a9cafca7c7489c46ba0d30a8bc6a9c3c"},
+    {file = "jsonschema_specifications-2023.12.1.tar.gz", hash = "sha256:48a76787b3e70f5ed53f1160d2b81f586e4ca6d1548c5de7085d1682674764cc"},
 ]
 
 [package.dependencies]
@@ -1820,6 +1820,26 @@ files = [
     {file = "kiwisolver-1.4.5-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:11d011a7574eb3b82bcc9c1a1d35c1d7075677fdd15de527d91b46bd35e935ee"},
     {file = "kiwisolver-1.4.5.tar.gz", hash = "sha256:e57e563a57fb22a142da34f38acc2fc1a5c864bc29ca1517a88abc963e60d6ec"},
 ]
+
+[[package]]
+name = "kwant"
+version = "1.4.4"
+description = "Package for numerical quantum transport calculations (Python 3 version)"
+optional = true
+python-versions = "*"
+files = [
+    {file = "kwant-1.4.4.tar.gz", hash = "sha256:6cf76cc09166714a46644a8127b82b386b1a8e76b8c836c95281f6f8be72ac30"},
+]
+
+[package.dependencies]
+numpy = ">=1.11.0"
+scipy = ">=0.17.0"
+tinyarray = ">=1.2"
+
+[package.extras]
+continuum = ["sympy (>=0.7.6)"]
+plotting = ["matplotlib (>=1.5.1)"]
+qsymm = ["qsymm (>=1.2.6)"]
 
 [[package]]
 name = "linkify-it-py"
@@ -4377,7 +4397,10 @@ files = [
 docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (<7.2.5)", "sphinx (>=3.5)", "sphinx-lint"]
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
+[extras]
+kwant = []
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b1fb5d158546b931f7c0a44f7a0f036b68577ad8e0aabb1723a5679ab825c4dd"
+content-hash = "f7375fa2261fe2e6d7972754b9abf11578b431ee5893d8c6a38383564b9b835b"
