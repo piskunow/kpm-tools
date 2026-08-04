@@ -31,8 +31,9 @@ KPM Tools is an open-source Python package that extends the Kernel Polynomial Me
 
 ## Requirements
 
-- Python >=3.9
+- Python >=3.11, <3.13
 - Kwant >= 1.4.4
+- NumPy <2.0 (required by Kwant, see the note below)
 
 ## Installation
 
@@ -69,6 +70,12 @@ While _KPM Tools_ requires Kwant to function, direct installation of Kwant via p
    Alternatively, refer to the [Kwant installation page](https://kwant-project.org/install) for detailed instructions on installing Kwant in different environments.
 
 After installing Kwant, you can then install KPM Tools using pip as shown above.
+
+> **Note on NumPy 2:** Kwant is currently incompatible with NumPy 2.x — the C
+> sources in its published release access a NumPy internal that became opaque in
+> 2.0, so it fails to compile. _KPM Tools_ therefore constrains `numpy<2.0` (and
+> `scipy<1.14`, which would otherwise pull NumPy 2 in). This constraint will be
+> relaxed once Kwant publishes a NumPy 2 compatible release.
 
 ## Python API
 

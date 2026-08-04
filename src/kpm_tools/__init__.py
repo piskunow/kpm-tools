@@ -1,4 +1,5 @@
 """KPM Tools."""
+
 # flake8: noqa
 try:
     import kwant

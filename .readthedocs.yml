@@ -1,12 +1,23 @@
 version: 2
 build:
-  os: ubuntu-20.04
+  os: ubuntu-24.04
   tools:
-    python: "3.10"
+    python: "3.12"
+  apt_packages:
+    # nbsphinx shells out to the pandoc binary to convert notebook markdown.
+    # The PyPI `pandoc` package is only a wrapper and does not provide it.
+    - pandoc
 sphinx:
   configuration: docs/conf.py
 formats: all
 python:
   install:
     - requirements: docs/requirements.txt
+    # Deliberately installed WITHOUT the kwant extra. kwant is an sdist-only
+    # distribution whose legacy setup.py imports numpy at build time, so it
+    # cannot be built under PEP 517 isolation -- pip fails with "NumPy header
+    # directory cannot be determined". docs/conf.py already sets
+    # autodoc_mock_imports = ["kwant"], and every tutorial notebook ships with
+    # stored outputs so nbsphinx does not execute them, so the docs build has
+    # no need for a real kwant.
     - path: .

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kpm-tools"
-version = "0.0.9"
+version = "0.1.0"
 description = "KPM Tools"
 authors = ["Pablo Piskunow <kpm@piskunow.com>"]
 license = "BSD 2-Clause"
@@ -10,23 +10,40 @@ repository = "https://github.com/piskunow/kpm-tools"
 documentation = "https://kpm-tools.readthedocs.io"
 classifiers = [
     "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [tool.poetry.urls]
 Changelog = "https://github.com/piskunow/kpm-tools/releases"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.11,<3.13"
 click = ">=8.0.1"
-tornado = ">=6.3.3"
-nox-poetry = "^1.0.3"
-numpy = "^1.26.2"
-scipy = "^1.11.4"
-matplotlib = "^3.8.2"
-tinyarray = "^1.2.4"
-pandoc = "^2.3"
+# numpy must stay below 2.0: kwant 1.5.0 ships pre-generated Cython C sources
+# that access PyArray_Descr.subarray, a struct member made opaque in NumPy 2,
+# so kwant fails to compile against it. Revisit when kwant releases a
+# NumPy 2 compatible version.
+numpy = ">=1.26.2,<2.0"
+scipy = ">=1.11.4,<1.14"
+matplotlib = ">=3.8.2"
+tinyarray = ">=1.2.4"
 
-[tool.poetry.dev-dependencies]
+# kwant is required for all real use of this library, but it is deliberately
+# kept optional: it is distributed as an sdist only (no wheels), so declaring
+# it as a hard dependency would force every `pip install kpm-tools` to compile
+# C/C++ from source and fail outright without a toolchain. The upstream project
+# recommends conda/mamba. `kpm_tools/__init__.py` raises an actionable error
+# pointing at those instructions when kwant is missing.
+kwant = { version = ">=1.4.4", optional = true }
+
+[tool.poetry.extras]
+kwant = ["kwant"]
+
+[tool.poetry.scripts]
+kpm-tools = "kpm_tools.__main__:main"
+
+[tool.poetry.group.dev.dependencies]
 Pygments = ">=2.10.0"
 black = ">=21.10b0"
 coverage = {extras = ["toml"], version = ">=6.2"}
@@ -37,35 +54,33 @@ flake8-bugbear = ">=21.9.2"
 flake8-docstrings = ">=1.6.0"
 flake8-rst-docstrings = ">=0.2.5"
 furo = ">=2021.11.12"
-isort = ">=5.10.1"
+isort = ">=5.12.0"
 mypy = ">=0.930"
 pep8-naming = ">=0.12.1"
+pip-audit = ">=2.7.0"
 pre-commit = ">=2.16.0"
 pre-commit-hooks = ">=4.1.0"
 pytest = ">=6.2.5"
 pyupgrade = ">=2.29.1"
-safety = ">=1.10.3"
 sphinx = ">=4.3.2"
 sphinx-autobuild = ">=2021.3.14"
 sphinx-click = ">=3.0.2"
 typeguard = ">=2.13.3"
 xdoctest = {extras = ["colors"], version = ">=0.15.10"}
 myst-parser = {version = ">=0.16.1"}
-kwant = { version = "^1.4.4", optional = true }
-
-[tool.poetry.extras]
-kwant = ["kwant"]
-
-[tool.poetry.scripts]
-kpm-tools = "kpm_tools.__main__:main"
-
-[tool.poetry.group.dev.dependencies]
-holoviews = "^1.18.1"
-nbsphinx = "^0.9.3"
-jupyter = "^1.0.0"
-plotly = "^5.18.0"
-pandoc = "^2.3"
-isort = "^5.12.0"
+# Docs toolchain: the Sphinx build renders the tutorial notebooks via nbsphinx,
+# which needs a Jupyter kernel. These used to be pulled in implicitly through
+# runtime dependencies; they are declared here now that the runtime list is clean.
+nbsphinx = ">=0.9.3"
+ipykernel = ">=6.29.0"
+jupyter = ">=1.0.0"
+holoviews = ">=1.18.1"
+# nox/nox-poetry were previously declared as *runtime* dependencies, which
+# shipped a test-runner to every user. CI installs them through pipx, but they
+# belong here so `poetry run nox` works for local development.
+nox = ">=2024.3.2"
+nox-poetry = ">=1.0.3"
+plotly = ">=5.18.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -82,7 +97,6 @@ fail_under = 0
 [tool.isort]
 profile = "black"
 force_single_line = true
-lines_after_imports = 2
 
 [tool.mypy]
 strict = true

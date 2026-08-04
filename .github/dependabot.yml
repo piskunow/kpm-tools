@@ -1,21 +1,48 @@
 version: 2
+# Daily individual PRs produced an unreviewable backlog (14 open PRs by the time
+# this was cleaned up). Weekly grouped updates keep the noise manageable.
 updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - "*"
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
-      interval: daily
+      interval: weekly
+    groups:
+      ci-tooling:
+        patterns:
+          - "*"
   - package-ecosystem: pip
     directory: "/docs"
     schedule:
-      interval: daily
+      interval: weekly
+    groups:
+      docs:
+        patterns:
+          - "*"
   - package-ecosystem: pip
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
     versioning-strategy: lockfile-only
     allow:
       - dependency-type: "all"
+    groups:
+      python-packages:
+        patterns:
+          - "*"
+    ignore:
+      # kwant 1.5.0 ships pre-generated Cython C sources that access
+      # PyArray_Descr.subarray, a struct member made opaque in NumPy 2, so it
+      # cannot compile against NumPy 2.x. scipy >= 1.14 requires NumPy 2.
+      # Remove both entries once kwant publishes a NumPy 2 compatible release.
+      - dependency-name: "numpy"
+        versions: [">=2.0"]
+      - dependency-name: "scipy"
+        versions: [">=1.14"]

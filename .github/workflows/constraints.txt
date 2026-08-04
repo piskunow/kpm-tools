@@ -1,5 +1,9 @@
-pip==23.3.2
-nox==2023.4.22
-nox-poetry==1.0.3
-poetry==1.7.1
-virtualenv==20.25.0
+pip==26.2
+nox==2026.7.11
+nox-poetry==1.2.0
+poetry==2.4.1
+# poetry export moved out of Poetry core in 2.x, but nox-poetry calls it for
+# every session.install. Without this plugin every nox session fails with
+# "The requested command export does not exist".
+poetry-plugin-export==1.10.0
+virtualenv==21.7.1

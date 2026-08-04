@@ -2,12 +2,12 @@
 
 Defined both with open boundary and periodic boundary conditions.
 """
+
 from itertools import product
 
 import kwant
 import numpy as np
 from kwant.builder import HoppingKind
-
 
 # neighbors for honeycomb lattice
 honeycomb = kwant.lattice.honeycomb(1, norbs=1, name=["a", "b"])
