@@ -16,7 +16,6 @@ from scipy.sparse.linalg import eigsh
 from .common import identity_operator
 from .utils import ensure_rng
 
-
 DEFAULT_MOMENTS = 100
 
 

@@ -1,4 +1,5 @@
 """Nox sessions."""
+
 import os
 import shlex
 import shutil
@@ -7,7 +8,6 @@ from pathlib import Path
 from textwrap import dedent
 
 import nox
-
 
 try:
     from nox_poetry import Session
@@ -23,15 +23,20 @@ except ImportError:
 
 
 package = "kpm_tools"
-python_versions = ["3.10", "3.9"]
+python_versions = ["3.12", "3.11"]
+# Python version ReadTheDocs builds with, per .readthedocs.yml. Kept in sync so
+# the docs-requirements session validates docs/requirements.txt on the same
+# interpreter RTD will actually use.
+rtd_python_version = "3.12"
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
-    "safety",
+    "pip-audit",
     "mypy",
     "tests",
     "typeguard",
     "xdoctest",
+    "docs-requirements",
     "docs-build",
 )
 
@@ -110,53 +115,27 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
                 break
 
 
-@nox.session(python=python_versions)
-def install_kwant(session: Session):
-    """Install kwant from PyPi."""
-    session.install("kwant")
+def install_with_kwant(session: Session) -> None:
+    """Install this package together with kwant.
 
+    kwant ships as an sdist only, so this compiles it and needs a C/C++
+    toolchain. It cannot go through the ``kwant`` extra: kwant's legacy
+    setup.py imports numpy to locate its headers, and PEP 517 build isolation
+    runs that build in a clean environment without numpy, so the build dies
+    with "NumPy header directory cannot be determined". Installing this package
+    first puts numpy in the environment, and ``--no-build-isolation`` lets
+    kwant's build see it. setuptools/wheel are explicit because isolation is
+    what would normally have supplied them, and 3.12+ venvs omit setuptools.
 
-@nox.session(python=python_versions)
-def build_kwant(session: Session):
-    """Build and install kwant from source."""
-    session.install("cython", "numpy", "scipy", "sympy", "tinyarray")
+    The previous ``build_kwant`` session cloned kwant and ran
+    ``python setup.py install``, which modern setuptools no longer supports.
 
-    # Store the original directory
-    original_dir = Path.cwd()
-
-    # temp folder
-    kwant_dir = Path(session.create_tmp()) / "kwant"
-
-    need_to_build = False
-    # Check if kwant directory exists
-    if os.path.exists(kwant_dir):
-        # If exists, pull the latest changes
-        session.run("git", "-C", kwant_dir, "pull", external=True)
-    else:
-        need_to_build = True
-        # If not, clone the repository
-        session.run(
-            "git",
-            "clone",
-            "https://github.com/kwant-project/kwant.git",
-            kwant_dir,
-            external=True,
-        )
-
-    # Navigate to the cloned directory
-    session.cd(str(kwant_dir))
-
-    # Checkout the stable branch
-    session.run("git", "checkout", "stable", external=True)
-
-    # Install kwant from source
-    if need_to_build:
-        session.run("python", "setup.py", "build")
-    session.run("python", "setup.py", "install")
-
-    # Return to the original directory and remove the kwant directory
-    session.cd(str(original_dir))
-    shutil.rmtree(str(kwant_dir))
+    Args:
+        session: The Session object.
+    """
+    session.install(".")
+    session.install("setuptools", "wheel")
+    session.install("--no-build-isolation", "kwant")
 
 
 @session(name="pre-commit", python=python_versions[0])
@@ -188,19 +167,52 @@ def precommit(session: Session) -> None:
         activate_virtualenv_in_precommit_hooks(session)
 
 
-@session(python=python_versions[0])
-def safety(session: Session) -> None:
-    """Scan dependencies for insecure packages."""
+@session(name="pip-audit", python=python_versions[0])
+def pip_audit(session: Session) -> None:
+    """Scan dependencies for known vulnerabilities.
+
+    Replaces the old ``safety`` session: safety 3.x requires an account and an
+    API key, which is unworkable in CI for a volunteer-maintained project.
+
+    Args:
+        session: The Session object.
+    """
     requirements = session.poetry.export_requirements()
-    session.install("safety")
-    session.run("safety", "check", "--full-report", f"--file={requirements}")
+    session.install("pip-audit")
+    session.run("pip-audit", f"--requirement={requirements}", "--strict")
+
+
+@session(name="docs-requirements", python=rtd_python_version)
+def docs_requirements(session: Session) -> None:
+    """Check docs/requirements.txt resolves on the interpreter RTD uses.
+
+    Nothing else installs docs/requirements.txt, so a pin that needs a newer
+    Python than .readthedocs.yml provides passes every other check and only
+    breaks the ReadTheDocs build after merge. This resolves it without
+    installing anything.
+
+    Args:
+        session: The Session object.
+    """
+    session.run(
+        "python",
+        "-m",
+        "pip",
+        "install",
+        "--dry-run",
+        "--ignore-installed",
+        "--report",
+        os.devnull,
+        "-r",
+        "docs/requirements.txt",
+    )
 
 
 @session(python=python_versions)
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
-    session.install(".")
+    install_with_kwant(session)
     session.install("mypy", "pytest")
     session.run("mypy", *args)
     if not session.posargs:
@@ -210,11 +222,8 @@ def mypy(session: Session) -> None:
 @session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
-    session.install(".")
+    install_with_kwant(session)
     session.install("coverage[toml]", "pytest", "pygments")
-
-    # Call the kwant installation functions
-    build_kwant(session)
 
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
@@ -239,11 +248,8 @@ def coverage(session: Session) -> None:
 @session(python=python_versions[0])
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
-    session.install(".")
+    install_with_kwant(session)
     session.install("pytest", "typeguard", "pygments")
-
-    # Call the kwant installation functions
-    build_kwant(session)
 
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
@@ -258,10 +264,26 @@ def xdoctest(session: Session) -> None:
         if "FORCE_COLOR" in os.environ:
             args.append("--colored=1")
 
-    session.install(".")
+    install_with_kwant(session)
 
     session.install("xdoctest[colors]")
     session.run("python", "-m", "xdoctest", *args)
+
+
+# The docs build deliberately does NOT install kwant, mirroring
+# .readthedocs.yml: docs/conf.py sets autodoc_mock_imports = ["kwant"], and
+# every tutorial notebook ships with stored outputs, so nbsphinx leaves them
+# unexecuted. Compiling kwant here would only make the build slower and more
+# fragile. nbsphinx does need the `pandoc` *binary* on PATH (the PyPI `pandoc`
+# package is only a wrapper); on ReadTheDocs that comes from apt_packages.
+DOCS_DEPS = (
+    "sphinx",
+    "sphinx-click",
+    "nbsphinx",
+    "ipykernel",
+    "furo",
+    "myst-parser",
+)
 
 
 @session(name="docs-build", python=python_versions[0])
@@ -272,9 +294,7 @@ def docs_build(session: Session) -> None:
         args.insert(0, "--color")
 
     session.install(".")
-    session.install(
-        "sphinx", "sphinx-click", "nbsphinx", "pandoc", "furo", "myst-parser"
-    )
+    session.install(*DOCS_DEPS)
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -289,15 +309,7 @@ def docs(session: Session) -> None:
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
 
     session.install(".")
-    session.install(
-        "sphinx",
-        "sphinx-autobuild",
-        "sphinx-click",
-        "furo",
-        "myst-parser",
-        "nbsphinx",
-        "pandoc",
-    )
+    session.install("sphinx-autobuild", *DOCS_DEPS)
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
