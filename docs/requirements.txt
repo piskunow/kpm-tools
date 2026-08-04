@@ -1,6 +1,10 @@
-furo==2023.9.10
-sphinx==7.2.6
-sphinx-click==5.1.0
-myst_parser==2.0.0
-nbsphinx==0.9.3
-pandoc==2.3
+furo==2025.12.19
+sphinx==9.1.0
+sphinx-click==6.2.0
+myst_parser==5.1.0
+nbsphinx==0.9.8
+# nbsphinx executes the tutorial notebooks, which needs a Jupyter kernel.
+ipykernel==7.3.0
+# NOTE: the `pandoc` PyPI package is intentionally absent here. It is only a thin
+# wrapper around the pandoc *binary*, which nbsphinx invokes directly and which
+# is installed via apt_packages in .readthedocs.yml.

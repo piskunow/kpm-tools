@@ -1,4 +1,5 @@
 """Pre-built common functions using the KPM generators."""
+
 import numpy as np
 
 from .common import identity_operator

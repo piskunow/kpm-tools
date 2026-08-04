@@ -2,6 +2,7 @@
 
 'wraparound_by_parts' is reworked from `~kwant.wraparound`, specially MR !363.
 """
+
 import cmath
 import collections
 import inspect
@@ -20,7 +21,6 @@ from kwant.wraparound import _set_signature
 from kwant.wraparound import wraparound
 
 from .utils import get_parameters
-
 
 support_site_array = hasattr(kwant.system, "SiteArray")
 
@@ -303,9 +303,11 @@ def wraparound_by_parts(
                 ret[hop] = val
         else:
             new_vals = [
-                bind_hopping(b_dom, val)
-                if callable(val) and not any(b_dom)  # skip hoppings already bound
-                else val
+                (
+                    bind_hopping(b_dom, val)
+                    if callable(val) and not any(b_dom)  # skip hoppings already bound
+                    else val
+                )
                 for val, b_dom in vals_doms
             ]
             if separate_sites:
