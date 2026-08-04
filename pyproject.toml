@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kpm-tools"
-version = "0.0.9"
+version = "0.1.0"
 description = "KPM Tools"
 authors = ["Pablo Piskunow <kpm@piskunow.com>"]
 license = "BSD 2-Clause"
@@ -10,6 +10,8 @@ repository = "https://github.com/piskunow/kpm-tools"
 documentation = "https://kpm-tools.readthedocs.io"
 classifiers = [
     "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [tool.poetry.urls]
