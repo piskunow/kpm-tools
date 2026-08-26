@@ -1,5 +1,5 @@
 pip==26.2.1
-nox==2026.8.10
+nox==2026.8.17
 nox-poetry==1.2.0
 poetry==2.4.1
 # poetry export moved out of Poetry core in 2.x, but nox-poetry calls it for
