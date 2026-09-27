@@ -271,7 +271,7 @@ class _BaseKPM:
             if not isinstance(vector_factory, Iterable):
                 raise TypeError("vector_factory must be iterable")
             try:
-                len(vector_factory)
+                len(vector_factory)  # noqa: B018 - probe for __len__
             except TypeError as err:
                 if num_vectors is None:
                     raise ValueError(
