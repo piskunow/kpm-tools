@@ -26,6 +26,13 @@ updates:
       docs:
         patterns:
           - "*"
+    ignore:
+      # Sphinx 9.2+ requires Python >=3.13, but Read the Docs builds these
+      # requirements on 3.12 (see .readthedocs.yml). Dependabot cannot see
+      # that constraint, so it proposes versions the docs install rejects.
+      # REMOVE THIS when .readthedocs.yml moves to Python 3.13.
+      - dependency-name: "sphinx"
+        versions: [">=9.2"]
   - package-ecosystem: pip
     directory: "/"
     schedule:
