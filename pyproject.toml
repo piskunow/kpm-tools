@@ -18,7 +18,7 @@ classifiers = [
 Changelog = "https://github.com/piskunow/kpm-tools/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.13"
+python = ">=3.11.5,<3.13"
 click = ">=8.0.1"
 # numpy must stay below 2.0: kwant 1.5.0 ships pre-generated Cython C sources
 # that access PyArray_Descr.subarray, a struct member made opaque in NumPy 2,
